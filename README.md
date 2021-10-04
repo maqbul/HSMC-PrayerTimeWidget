@@ -1,2 +1,2 @@
-# HSMC-PrayerTimeWidget
-iOS Scriptable widget for Masjide Raza
+# HSMC-PrayerTimeWidget iOS scriptable
+iOS Scriptable widget for Masjide Raza.
