@@ -1,4 +1,4 @@
-//online code host,  margins, sunset colors, when offline message,progress bar, if isha12hour substring > 9 reduce spacing for time display,
+//made changes online code host,  margins, sunset colors, when offline message,progress bar, if isha12hour substring > 9 reduce spacing for time display,
 
 //header - Masjideraza prayertime v1.0 developed by Maqbul Yusuf 3/10/21
 
