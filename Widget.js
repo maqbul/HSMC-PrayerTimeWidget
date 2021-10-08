@@ -1,15 +1,15 @@
  /*
-  #############################################################
-     Salah widget v1.0 
-     Developed by: Maqbul Yusuf
-     Email: maqbul.yusuf@sky.com
-     Date: 3/10/21
-     Compatible with iOS (scriptable app)
+  #########################################################
+   Salah widget v1.0 
+   Developed by: Maqbul Yusuf
+   Email: maqbul.yusuf@sky.com
+   Date: 3/10/21
+   Compatible with iOS (scriptable app)
      
-     Please do NOT remove or modify this header
+   Please do NOT remove or modify this header
      
-     To check for updates or to leave feedback, tap on widget
-  ##############################################################
+   To check for updates or to leave feedback, tap on widget
+  ##########################################################
 */
  
 
@@ -139,9 +139,7 @@ timenow=h+':'+m
 
 //var nextsalah=sunrise
 console.log('time: '+ timenow )
-//console.log(fajarb)
 
-//console.log(fajarb)
 
 if (timenow<fajarb){
   nextprayername=fajar12hr
