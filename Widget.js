@@ -1,9 +1,20 @@
+ /*
+  #############################################################
+     Salah widget v1.0 
+     Developed by: Maqbul Yusuf
+     Email: maqbul.yusuf@sky.com
+     Date: 3/10/21
+     Compatible with iOS (scriptable app)
+     
+     Please do NOT remove or modify this header
+     
+     To check for updates or to leave feedback, tap on widget
+  ##############################################################
+*/
  
-//header - Masjideraza prayertime v1.0 developed by Maqbul Yusuf 3/10/21
 
+// < **** User Preference ***** 
 
-// < **** User Preference ***** >
- 
 let  Show_Beginning_Times="YES"  //enter YES or NO
 
 // < **** User Preference ***** >
