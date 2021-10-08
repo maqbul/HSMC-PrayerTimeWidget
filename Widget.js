@@ -1,19 +1,20 @@
-//online code host, margins, sunset colors, when offline message,progress bar, if isha12hour substring > 9 reduce spacing for time display,
-
+ 
 //header - Masjideraza prayertime v1.0 developed by Maqbul Yusuf 3/10/21
 
-//scriptables.net git for upload and generate
-// < **** UserSettings ***** >
-let  Show_Beginning_Times="YES"
 
- console.log(Show_Beginning_Times)
+// < **** User Preference ***** >
+ 
+let  Show_Beginning_Times="YES"  //enter YES or NO
+
+// < **** User Preference ***** >
+
+ console.log('Beginning: '+ Show_Beginning_Times)
 
 let widget = new ListWidget()
 
 let url = "https://mis-productions.co.uk/prayertimes/hsmc/data.json";
 let r = new Request(url)
-let getPrayer = await r.loadJSON()
-   
+let getPrayer = await r.loadJSON()   
 var str=JSON.stringify(getPrayer)
 
 
@@ -22,11 +23,9 @@ var start = new Date(now.getFullYear(), 0, 0);
 var diff = now - start;
 var oneDay = 1000 * 60 * 60 * 24;
 var daynumber = Math.floor(diff / oneDay);
-//test daynumber
-//var daynumber = 274
 
 console.log('Day number: ' + daynumber);
-//console.log(getPrayer[daynumber].beginning.asarb)
+
 
 //beginnings
 var fajarb=getPrayer[daynumber].beginning.fajarb
@@ -45,7 +44,6 @@ var isha=getPrayer[daynumber].jamaat.isha
 
 
 //12 hour formatting
-
 var fajar12hr = fajar;
 var H = +fajar12hr.substr(0, 2);
 var h = H % 12 || 12;
@@ -98,7 +96,6 @@ var H = +maghrib12hr.substr(0, 2);
 var h = H % 12 || 12;
 var ampm = (H < 12 || H === 24) ? "" : "";
 maghrib12hr = h + maghrib12hr.substr(2, 3) + ampm;
-//console.log(maghrib12hr)
 
 
 var isha12hr = isha;
@@ -106,7 +103,6 @@ var H = +isha12hr.substr(0, 2);
 var h = H % 12 || 12;
 var ampm = (H < 12 || H === 24) ? "" : "";
 isha12hr = h + isha12hr.substr(2, 3) + ampm;
-//console.log(isha12hr)
 
 
 var ishab12hr = ishab;
@@ -114,7 +110,6 @@ var H = +ishab12hr.substr(0, 2);
 var h = H % 12 || 12;
 var ampm = (H < 12 || H === 24) ? "" : "";
 ishab12hr = h + ishab12hr.substr(2, 3) + ampm;
-//console.log(isha12hr)
 
 var nextprayerlabel="   "
 var nextprayername=""
@@ -128,7 +123,7 @@ if (m<10){m="0"+m}
 
 timenow=h+':'+m
 
-//test clock// 
+//test clock
 //timenow="17:00"
 
 //var nextsalah=sunrise
@@ -139,12 +134,12 @@ console.log('time: '+ timenow )
 
 if (timenow<fajarb){
   nextprayername=fajar12hr
-  nextprayerlabel="FAJAR    "//9 CHAR SPACES
+  nextprayerlabel="FAJAR    "//8 CHAR SPACES
   }
   
   if (timenow>=fajar){
   nextprayername=sunrise12hr
-  nextprayerlabel="SUNRISE"//9 CHAR SPACES
+  nextprayerlabel="SUNRISE"//8 CHAR SPACES
   }
 
 if (timenow>=sunrise){
@@ -177,20 +172,14 @@ if (timenow>isha){
   nextprayername=sunriseTomorrow
   nextprayerlabel="SUNRISE"//8 CHAR SPACES
   }
-/*
-var newText = widget.addText("texttext") 
-newText.font = Font.blackRoundedSystemFont(5) ;
-newText.textColor = Color.purple()
-*/
 
-
+ 
 let nextprayer=widget.addText(
 nextprayerlabel + '                         '+ nextprayername)
 nextprayer.textColor =Color.white()
 nextprayer.font = Font.boldMonospacedSystemFont(23)
-  
-//nextprayer.tintColor = Color.blue()
- //widget.backgroundColor = new Color("#000");
+   
+
 
 let gradient = new LinearGradient()
   gradient.locations = [0, 1]
@@ -219,10 +208,7 @@ gradient.colors = [
   ]
 }
 
-
-
-
-
+ 
 
 else if(timenow>=maghribb){
 //night
@@ -239,7 +225,6 @@ widget.url="http://www.mis-productions.co.uk/salah-widget-ios"
 
 //let showsunrise = widget.addText("Sunrise" + "     "+ sunrise);
 
-//widget.font = Font.regularSystemFont(29);
 
 let main = widget.addStack()
 
@@ -343,10 +328,6 @@ ishalabel.textColor =Color.white()
   label.addSpacer(1)
   
   //widget.addSpacer(5);
-
-//label.font = new Color('black')
-
- //label.font = Font.lightSystemFont(5);
  
 jamaat.addSpacer(1)
   if (Show_Beginning_Times=="YES"){
@@ -415,7 +396,7 @@ ishajamaat.textColor = Color.white()
 ishajamaat.textOpacity=0.9
 jamaat.addSpacer(2) 
 }
-//fajrlabel.textColor =Color.purple()
+
 
 main.layoutVertically()
 middle.layoutVertically()
@@ -423,53 +404,14 @@ left.layoutVertically()
 right.layoutVertically()
 
 
-
-
-//update.font = Font.regularSystemFont(10);
-//update.textColor = themeColor;
-//update.rightAlignText();
-//console.log(update)
-
-
 //minimumScaleFactor(0)
   
 widget.setPadding(50, 25, 0, 0)
  
-
-
-
 if(!config.runsInWidget){
 widget.presentMedium()
 
 }
 
- 
-
-
 Script.setWidget(widget)
 Script.complete()
-
-
-
-
-
- //quotes = quoteObj[0].text;
-//characterName = quoteObj[0].author;
-
-
- 
-
-
-
-
-//Anime Quote
-
-
-
-
-
-//widget.setPadding(10, 10, 10, 10);
-//return ListWidget()
-
-
-//Script.setWidget(widget)
