@@ -171,8 +171,6 @@ nextprayername=maghrib12hr
 nextprayername=isha12hr
 }
 
-//TODO if isha12hour substring > 9 reduce spacing for time display
-
 
 //set tomorrows sunrise after isha
 var sunriseTomorrow=getPrayer[daynumber+1].beginning.sunrise.substring(1,5)
@@ -232,7 +230,6 @@ widget.backgroundGradient = gradient
 widget.addSpacer(25)
 widget.url="http://www.mis-productions.co.uk/salah-widget-ios" 
 
-//let showsunrise = widget.addText("Sunrise" + "     "+ sunrise);
 
 
 let main = widget.addStack()
