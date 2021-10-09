@@ -8,7 +8,7 @@
      
    Please do NOT remove or modify this header
      
-   To check for updates or to leave feedback, tap on widget
+   To check for updates or to leave feedback, tap on widget.
   ##########################################################
 */
  
