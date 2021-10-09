@@ -15,7 +15,7 @@
 
 // < **** User Preference ***** 
 
-let  Show_Beginning_Times="YES"  //enter YES or NO
+let  Show_Beginning_Times="yes"  //enter yes or no
 
 // < **** User Preference ***** >
 
@@ -339,7 +339,7 @@ ishalabel.textColor =Color.white()
   //widget.addSpacer(5);
  
 jamaat.addSpacer(1)
-  if (Show_Beginning_Times=="YES"){
+  if (Show_Beginning_Times=="yes"){
   var fajarjamaat = jamaat.addText(fajarb12hr) 
   fajarjamaat.font = Font.boldMonospacedSystemFont(17) ;
 fajarjamaat.textColor = Color.white()
