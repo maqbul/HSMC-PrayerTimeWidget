@@ -1,6 +1,6 @@
  /*
   #########################################################
-   Salah widget v1.0 
+   Salah widget v1.0.1
    Developed by: Maqbul Yusuf
    Email: maqbul.yusuf@sky.com
    Date: 3/10/21
