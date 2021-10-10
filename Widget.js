@@ -1,31 +1,31 @@
- /*
-  #########################################################
-   Salah widget v1.0.1
-   Developed by: Maqbul Yusuf
-   Email: maqbul.yusuf@sky.com
-   Date: 3/10/21
-   Compatible with iOS (scriptable app)
+/*
+##########################################################
+  
+  Salah Widget v1.0 
+  Developed by: Maqbul Yusuf
+  Email: maqbul.yusuf@sky.com
+  Date: 10/10/21
+  Compatible with iOS (scriptable app)
      
-   Please do NOT remove or modify this header
+  Please do NOT remove or modify this header
      
-   To check for updates or to leave feedback, tap on widget.
+  To check for updates or to leave feedback, tap on widget
   ##########################################################
 */
- 
 
-// < **** User Preference ***** 
 
-let  Show_Beginning_Times="yes"  //enter yes or no
 
-// < **** User Preference ***** >
+// < **** UserSettings ***** >
+let  Show_Beginning_Times="yes" //enter yes or no
+// < **** UserSettings ***** >
 
- console.log('Beginning: '+ Show_Beginning_Times)
+console.log('Display Beginning: '+Show_Beginning_Times)
 
 let widget = new ListWidget()
 
 let url = "https://mis-productions.co.uk/prayertimes/hsmc/data.json";
 let r = new Request(url)
-let getPrayer = await r.loadJSON()   
+let getPrayer = await r.loadJSON()
 var str=JSON.stringify(getPrayer)
 
 
@@ -36,7 +36,6 @@ var oneDay = 1000 * 60 * 60 * 24;
 var daynumber = Math.floor(diff / oneDay);
 
 console.log('Day number: ' + daynumber);
-
 
 //beginnings
 var fajarb=getPrayer[daynumber].beginning.fajarb
@@ -107,6 +106,7 @@ var H = +maghrib12hr.substr(0, 2);
 var h = H % 12 || 12;
 var ampm = (H < 12 || H === 24) ? "" : "";
 maghrib12hr = h + maghrib12hr.substr(2, 3) + ampm;
+//console.log(maghrib12hr)
 
 
 var isha12hr = isha;
@@ -114,6 +114,7 @@ var H = +isha12hr.substr(0, 2);
 var h = H % 12 || 12;
 var ampm = (H < 12 || H === 24) ? "" : "";
 isha12hr = h + isha12hr.substr(2, 3) + ampm;
+//console.log(isha12hr)
 
 
 var ishab12hr = ishab;
@@ -121,6 +122,7 @@ var H = +ishab12hr.substr(0, 2);
 var h = H % 12 || 12;
 var ampm = (H < 12 || H === 24) ? "" : "";
 ishab12hr = h + ishab12hr.substr(2, 3) + ampm;
+//console.log(isha12hr)
 
 var nextprayerlabel="   "
 var nextprayername=""
@@ -133,43 +135,68 @@ if (h<10){h="0"+h}
 if (m<10){m="0"+m}
 
 timenow=h+':'+m
+ 
+//timenow="19:00"
 
-//test clock
-//timenow="17:00"
-
-//var nextsalah=sunrise
 console.log('time: '+ timenow )
-
-
-if (timenow<fajarb){
+ 
+//check beginning preference and change display
+if (timenow<fajarb&&Show_Beginning_Times!="yes"){
   nextprayername=fajar12hr
-  nextprayerlabel="FAJAR    "//8 CHAR SPACES
+  nextprayerlabel="FAJAR    "//9 CHAR SPACES
   }
-  
-  if (timenow>=fajar){
+  else if (timenow<fajarb){
   nextprayername=sunrise12hr
-  nextprayerlabel="SUNRISE"//8 CHAR SPACES
-  }
-
-if (timenow>=sunrise){
-  nextprayername=zohar12hr
-  nextprayerlabel="ZOHAR   "//8 CHAR SPACES
+  nextprayerlabel="SUNRISE"
   }
   
-  if (timenow>=zohar&&timenow<asar){
+  if (timenow>fajar){
+  nextprayername=sunrise12hr
+  nextprayerlabel="SUNRISE"//9 CHAR SPACES
+  }
+   
+
+if (timenow>sunrise&&timenow<zohar&&Show_Beginning_Times!='yes'){
+  nextprayername=zohar12hr
+  nextprayerlabel="ZOHAR    "//8 CHAR SPACES
+  }
+  
+  else if (timenow>sunrise&&timenow<zoharb){
+  nextprayername=zoharb12hr
+  nextprayerlabel="ZOHAR    "
+  
+  }
+  
+if (timenow>zohar&&timenow<asar&&Show_Beginning_Times!='yes'){
  nextprayerlabel="ASAR       "//8 SPACE CHARS MAX
 nextprayername=asar12hr
-  }
+}  
   
-  if (timenow>=asar&&timenow<maghribb){
+  
+  else if(timenow>zoharb&&timenow<asarb){
+  nextprayername=asarb12hr
+  nextprayerlabel="ASAR       "
+  }
+
+  
+ if (timenow>asarb&&timenow<maghribb){
  nextprayerlabel="MAGRIB  "//8 SPACE CHARS MAX
-nextprayername=maghrib12hr
-  }
+ nextprayername=maghrib12hr
+  console.log('ter ee')
+
+ }
+ 
   
-  if (timenow>=maghribb&&timenow<isha){
- nextprayerlabel="ISHA        "//8 SPACE CHARS MAX
-nextprayername=isha12hr
+ if (timenow>maghribb&&timenow<isha&&  Show_Beginning_Times!='yes'){
+ nextprayerlabel="ISHA         "//8 SPACE CHARS MAX
+ nextprayername=isha12hr
 }
+
+else if (timenow>maghribb&&timenow<ishab){
+  nextprayername=ishab12hr
+  nextprayerlabel="ISHA         "
+  }
+
 
 
 //set tomorrows sunrise after isha
@@ -180,13 +207,11 @@ if (timenow>isha){
   nextprayerlabel="SUNRISE"//8 CHAR SPACES
   }
 
- 
 let nextprayer=widget.addText(
 nextprayerlabel + '                         '+ nextprayername)
 nextprayer.textColor =Color.white()
 nextprayer.font = Font.boldMonospacedSystemFont(23)
-   
-
+  
 
 let gradient = new LinearGradient()
   gradient.locations = [0, 1]
@@ -215,7 +240,6 @@ gradient.colors = [
   ]
 }
 
- 
 
 else if(timenow>=maghribb){
 //night
@@ -226,14 +250,13 @@ gradient.colors = [
 }
 
 
+
 widget.backgroundGradient = gradient
 widget.addSpacer(25)
 widget.url="http://www.mis-productions.co.uk/salah-widget-ios" 
 
 
-
 let main = widget.addStack()
-
 let left = main.addStack()
 let right = main.addStack()
 let middle = main.addStack()
@@ -244,13 +267,10 @@ let icon = left.addStack()
 let jamaat = middle.addStack()
 let label = middle.addStack()
 
-
 let rightTitle = right.addStack()
 let rightContent = right.addStack()
 
-
 spacing.addSpacer(23)
-
 main.addStack()
 main.addSpacer(10)
 
@@ -290,12 +310,9 @@ let ishaIcon = SFSymbol.named("moon.fill")
     docsElement5.tintColor = Color.white()
     docsElement5.imageOpacity = 0.5
  
-
       
 //bottom spacing
 widget.addSpacer(20)
- 
-//push previous spacer val to move target salah to right
 label.addSpacer(3)
 
 let fajrlabel = label.addText("fajar");
@@ -308,7 +325,6 @@ fajrlabel.textColor =Color.white()
 
 let zuhrlabel = label.addText("zuhr");
   zuhrlabel.textColor =Color.white()
-  //heading.centerAlignText();
   zuhrlabel.font = Font.lightSystemFont(18); 
   zuhrlabel.textOpacity=0.9
   label.addSpacer(20)
@@ -333,8 +349,6 @@ ishalabel.textColor =Color.white()
    ishalabel.textOpacity=0.9
   label.addSpacer(1)
   
-  //widget.addSpacer(5);
- 
 jamaat.addSpacer(1)
   if (Show_Beginning_Times=="yes"){
   var fajarjamaat = jamaat.addText(fajarb12hr) 
@@ -403,21 +417,19 @@ ishajamaat.textOpacity=0.9
 jamaat.addSpacer(2) 
 }
 
-
 main.layoutVertically()
 middle.layoutVertically()
 left.layoutVertically()
 right.layoutVertically()
-
-
-//minimumScaleFactor(0)
   
 widget.setPadding(50, 25, 0, 0)
  
+
 if(!config.runsInWidget){
 widget.presentMedium()
 
 }
-
+ 
 Script.setWidget(widget)
 Script.complete()
+
