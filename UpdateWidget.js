@@ -2,7 +2,7 @@
 
 async function main() {
 	let widget = new ListWidget();
-  widget.addText('Hello duniya');
+  widget.addText('Hello duniya udpated!');
  	let value = (config.runsInWidget) ? Script.setWidget(widget) : await widget.presentMedium();
  	Script.complete();
 }
