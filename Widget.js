@@ -1,33 +1,50 @@
+
 /*
 ##########################################################
   
-  Salah Widget v1.0 
+  Salah Widget v1.1 - 311221
   Developed by: Maqbul Yusuf
   Email: maqbul.yusuf@sky.com
-  Date: 10/10/21
+  Launched Date: 14/10/21
   Compatible with iOS (scriptable app)
      
   Please do NOT remove or modify this header
      
   To check for updates or to leave feedback, tap on widget
-  ##########################################################
+
+
+   change log:
+ * new year bug fix (no data displayed) 
+ * added gradient for Asar 
+ * formatted to show 24 hour times
+ * reduced 30 lines of code using fuctions for formatting
+   (plus code tidy)
+
+##########################################################
 */
 
+//Notes: copy all code to github - DEV_Widget.js, remove commented lines at top (async) and bottom to test then if all ok, replace Widget.js on github
 
 
-// < **** UserSettings ***** >
-let  Show_Beginning_Times="yes" //enter yes or no
-// < **** UserSettings ***** >
+//async function main() { //uncomment when publish
 
-console.log('Display Beginning: '+Show_Beginning_Times)
-
+  
+ //create local file to set preference 
+ let fm =FileManager.local()
+ let dir = fm.documentsDirectory()
+ let path =fm.joinPath(dir, "show_beginning_preference.txt") 
+ let getPreference=fm.readString(path)
+ 
+ let  Show_Beginning_Times=getPreference //get preference from local set in main module
+  
+ console.log('Display beginning: '+Show_Beginning_Times)
+  
 let widget = new ListWidget()
 
 let url = "https://mis-productions.co.uk/prayertimes/hsmc/data.json";
 let r = new Request(url)
 let getPrayer = await r.loadJSON()
 var str=JSON.stringify(getPrayer)
-
 
 var now = new Date();
 var start = new Date(now.getFullYear(), 0, 0);
@@ -51,79 +68,8 @@ var zohar=getPrayer[daynumber].jamaat.zohar
 var asar=getPrayer[daynumber].jamaat.asar
 var maghrib=getPrayer[daynumber].jamaat.maghribb
 var isha=getPrayer[daynumber].jamaat.isha
-
-
-//12 hour formatting
-var fajar12hr = fajar;
-var H = +fajar12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-fajar12hr = h + fajar12hr.substr(2, 3) + ampm;
-
-var fajarb12hr = fajarb;
-var H = +fajarb12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-fajarb12hr = h + fajarb12hr.substr(2, 3) + ampm;
-
-
-var sunrise12hr = sunrise;
-var H = +sunrise12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-sunrise12hr = h + sunrise12hr.substr(2, 3) + ampm;
-
-
-var zohar12hr = zohar;
-var H = +zohar12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-zohar12hr = h + zohar12hr.substr(2, 3) + ampm;
  
-
-var zoharb12hr = zoharb;
-var H = +zoharb12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-zoharb12hr = h + zoharb12hr.substr(2, 3) + ampm;
- 
-
-var asar12hr = asar;
-var H = +asar12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-asar12hr = h + asar12hr.substr(2, 3) + ampm;
-
-var asarb12hr = asarb;
-var H = +asarb12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-asarb12hr = h + asarb12hr.substr(2, 3) + ampm;
- 
-
-var maghrib12hr = maghribb;
-var H = +maghrib12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-maghrib12hr = h + maghrib12hr.substr(2, 3) + ampm;
-//console.log(maghrib12hr)
-
-
-var isha12hr = isha;
-var H = +isha12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-isha12hr = h + isha12hr.substr(2, 3) + ampm;
-//console.log(isha12hr)
-
-
-var ishab12hr = ishab;
-var H = +ishab12hr.substr(0, 2);
-var h = H % 12 || 12;
-var ampm = (H < 12 || H === 24) ? "" : "";
-ishab12hr = h + ishab12hr.substr(2, 3) + ampm;
-//console.log(isha12hr)
-
+   
 var nextprayerlabel="   "
 var nextprayername=""
 
@@ -136,123 +82,153 @@ if (m<10){m="0"+m}
 
 timenow=h+':'+m
  
-//timenow="19:00"
+//timenow="15:55"
 
 console.log('time: '+ timenow )
  
-//check beginning preference and change display
-if (timenow<fajarb&&Show_Beginning_Times!="yes"){
-  nextprayername=fajar12hr
-  nextprayerlabel="FAJAR    "//9 CHAR SPACES
+//NEXT PRAYER LABEL - based on begin/jamaat preference
+
+ if (timenow<fajarb&&Show_Beginning_Times=="no"){
+  nextprayername=fajar
+  nextprayerlabel="FAJAR   "//9 CHAR SPACES
   }
-  else if (timenow<fajarb){
-  nextprayername=sunrise12hr
+  else if (timenow>fajarb&&timenow<sunrise){
+  nextprayername=sunrise
   nextprayerlabel="SUNRISE"
   }
   
-  if (timenow>fajar){
-  nextprayername=sunrise12hr
-  nextprayerlabel="SUNRISE"//9 CHAR SPACES
-  }
    
 
-if (timenow>sunrise&&timenow<zohar&&Show_Beginning_Times!='yes'){
-  nextprayername=zohar12hr
-  nextprayerlabel="ZOHAR    "//8 CHAR SPACES
+if (timenow>sunrise&&timenow<zohar&&Show_Beginning_Times=='no'){
+  nextprayername=zohar
+  nextprayerlabel="ZOHAR  "
   }
   
   else if (timenow>sunrise&&timenow<zoharb){
-  nextprayername=zoharb12hr
-  nextprayerlabel="ZOHAR    "
+  nextprayername=zoharb
+  nextprayerlabel="ZOHAR  "
   
   }
   
-if (timenow>zohar&&timenow<asar&&Show_Beginning_Times!='yes'){
- nextprayerlabel="ASAR       "//8 SPACE CHARS MAX
-nextprayername=asar12hr
+if (timenow>zohar&&timenow<asar&&Show_Beginning_Times=='no'){
+ nextprayerlabel="ASAR      "
+nextprayername=asar
 }  
   
-  
   else if(timenow>zoharb&&timenow<asarb){
-  nextprayername=asarb12hr
-  nextprayerlabel="ASAR       "
+  nextprayername=asarb
+  nextprayerlabel="ASAR     "
   }
 
   
  if (timenow>asarb&&timenow<maghribb){
- nextprayerlabel="MAGRIB  "//8 SPACE CHARS MAX
- nextprayername=maghrib12hr
-  console.log('ter ee')
-
+ nextprayerlabel="MAGRIB"//8 SPACE CHARS MAX
+ nextprayername=maghribb
+ 
  }
  
   
- if (timenow>maghribb&&timenow<isha&&  Show_Beginning_Times!='yes'){
- nextprayerlabel="ISHA         "//8 SPACE CHARS MAX
- nextprayername=isha12hr
+ if (timenow>maghribb&&timenow<isha&&  Show_Beginning_Times=='no'){
+ nextprayerlabel="ISHA        "
+ nextprayername=isha
 }
 
-else if (timenow>maghribb&&timenow<ishab){
-  nextprayername=ishab12hr
-  nextprayerlabel="ISHA         "
+else if (timenow>maghribb&&timenow<isha){
+  nextprayername=ishab
+  nextprayerlabel="ISHA        "
   }
 
+ 
+//set tomorrows sunrise after isha on new years day say message (ths is a bug fix showing error as reached 365 day number and can not +1 for next dayi.e 366 non existence)
 
+if (timenow>isha&&daynumber<365){
+var sunriseTomorrow=getPrayer[daynumber+1].beginning.sunrise
 
-//set tomorrows sunrise after isha
-var sunriseTomorrow=getPrayer[daynumber+1].beginning.sunrise.substring(1,5)
-
-if (timenow>isha){
   nextprayername=sunriseTomorrow
   nextprayerlabel="SUNRISE"//8 CHAR SPACES
   }
+  else{
+   nextprayername="New Year" 
+  }
+  
+  
 
 let nextprayer=widget.addText(
 nextprayerlabel + '                         '+ nextprayername)
 nextprayer.textColor =Color.white()
 nextprayer.font = Font.boldMonospacedSystemFont(23)
   
+  
+//GRADIENT COLOR CHANGE  
 
 let gradient = new LinearGradient()
   gradient.locations = [0, 1]
   
+  
+// SUNRISE COLOR  
  if (timenow>=fajar&&timenow<sunrise){
-  //sunrise
-  gradient.colors = [
+    gradient.colors = [
     new Color("d7816a"),
     new Color("bd4f6c")
   ]
 }
 
-
-else if (timenow>=sunrise&&timenow<asar){
- //day time until asar 
- gradient.colors = [
+// ZOHAR COLOR
+else if(timenow>sunrise&&timenow<zohar){ 
+    gradient.colors = [
     new Color("18A8D8"),
     new Color("6048C0")
   ] 
-}
+ }
+
+// ASAR COLOR
+else if (timenow>=zohar&&timenow<asar){
+    gradient.colors = [
+    new Color("91A1D1"),
+    new Color("6148CC")
+  ] 
+ }
+
+// MAGHRIB COLOR
 else if(timenow>=asar&&timenow<maghribb){
-//sunset
-gradient.colors = [
+    gradient.colors = [
     new Color("ee9617"),
     new Color("fe5858")
   ]
 }
 
 
+// ISHA COLOR
 else if(timenow>=maghribb){
-//night
-gradient.colors = [
+    gradient.colors = [
     new Color("353535"),
     new Color("030303")
   ]
 }
 
+  
+  
+
+// Feedback message
+widget.addSpacer(4)
+
+widget.addStack()
+var feedback = widget.addText('               USEFUL? LEAVE FEEDBACK - TAP WIDGET')
+feedback.font = Font.headline()
+feedback.font = Font.lightSystemFont(10); 
+feedback.textOpacity=0 
+
+var todaysDate=now.getDate()
+console.log ('Todays date ' + todaysDate)
+
+if (todaysDate == 30){
+feedback.textOpacity=0.2 //Opacity when displaying msg
+}
+
 
 
 widget.backgroundGradient = gradient
-widget.addSpacer(25)
+widget.addSpacer(9)
 widget.url="http://www.mis-productions.co.uk/salah-widget-ios" 
 
 
@@ -270,9 +246,12 @@ let label = middle.addStack()
 let rightTitle = right.addStack()
 let rightContent = right.addStack()
 
-spacing.addSpacer(23)
+spacing.addSpacer(300) 
 main.addStack()
 main.addSpacer(10)
+
+
+// ICON DISPLAY
 
 let fajarIcon = SFSymbol.named("sun.haze.fill")
     let docsElement1 = icon.addImage(fajarIcon.image)
@@ -286,18 +265,19 @@ let fajarIcon = SFSymbol.named("sun.haze.fill")
     docsElement2.imageSize = new Size(80, 22)
     docsElement2.tintColor = Color.white()
     docsElement2.imageOpacity = 0.7
-    widget.addSpacer(20)
+    widget.addSpacer(21)
+    
 
 let asarIcon = SFSymbol.named("sun.max.fill")
     let docsElement3 = icon.addImage(asarIcon.image)
-    docsElement3.imageSize = new Size(30, 22)
+    docsElement3.imageSize = new Size(34, 22)
     docsElement3.tintColor = Color.white()
     docsElement3.imageOpacity = 0.7
  
  
 let maghribIcon = SFSymbol.named("sunset.fill")
     let docsElement4 = icon.addImage(maghribIcon.image)
-    docsElement4.imageSize = new Size(89, 22)
+    docsElement4.imageSize = new Size(88, 22)
     docsElement4.tintColor = Color.white()
     docsElement4.imageOpacity = 0.7
     
@@ -306,130 +286,138 @@ left.addSpacer(10)
 
 let ishaIcon = SFSymbol.named("moon.fill")
     let docsElement5 = icon.addImage(ishaIcon.image)
-    docsElement5.imageSize = new Size(40, 22)
+    docsElement5.imageSize = new Size(32, 22)
     docsElement5.tintColor = Color.white()
     docsElement5.imageOpacity = 0.5
  
       
-//bottom spacing
+// Bottom spacing
 widget.addSpacer(20)
-label.addSpacer(3)
+label.addSpacer(5)
+
+
+//SALAH LABELS FOOTER
+
 
 let fajrlabel = label.addText("fajar");
-fajrlabel.textColor =Color.white()
-   fajrlabel.font = Font.lightSystemFont(18); 
-   fajrlabel.textOpacity=0.9
-   fajrlabel.tintColor= Color.red()
-   label.addSpacer(26)
+formatSalahLabel(fajrlabel)
+label.addSpacer(27) // < changes next salah spacing 
 
 
 let zuhrlabel = label.addText("zuhr");
-  zuhrlabel.textColor =Color.white()
-  zuhrlabel.font = Font.lightSystemFont(18); 
-  zuhrlabel.textOpacity=0.9
-  label.addSpacer(20)
+formatSalahLabel(zuhrlabel)
+label.addSpacer(28) 
 
 
 let asarlabel = label.addText("asar");
- asarlabel.textColor =Color.white()
-    asarlabel.font = Font.lightSystemFont(18); 
-   asarlabel.textOpacity=0.9
- label.addSpacer(24)
+formatSalahLabel(asarlabel)
+label.addSpacer(27) 
 
 
 let maghriblabel = label.addText("magr");
-  maghriblabel.textColor =Color.white() 
-  maghriblabel.font = Font.lightSystemFont(18); 
-   maghriblabel.textOpacity=0.9
- label.addSpacer(22)
+formatSalahLabel(maghriblabel)
+label.addSpacer(25)
 
 let ishalabel = label.addText("isha");
-ishalabel.textColor =Color.white()
-   ishalabel.font = Font.lightSystemFont(18); 
-   ishalabel.textOpacity=0.9
-  label.addSpacer(1)
-  
-jamaat.addSpacer(1)
-  if (Show_Beginning_Times=="yes"){
-  var fajarjamaat = jamaat.addText(fajarb12hr) 
-  fajarjamaat.font = Font.boldMonospacedSystemFont(17) ;
-fajarjamaat.textColor = Color.white()
-fajarjamaat.textOpacity=0.9
-  jamaat.addSpacer(21) 
-  
-  var zoharjamaat = jamaat.addText(zoharb12hr) 
-  zoharjamaat.font = Font.boldMonospacedSystemFont(17) ;
-zoharjamaat.textColor = Color.white()
-zoharjamaat.textOpacity=0.9
-  jamaat.addSpacer(20) 
-  
-  var asarjamaat = jamaat.addText(asarb12hr) 
-  asarjamaat.font = Font.boldMonospacedSystemFont(17) ;
-asarjamaat.textColor = Color.white()
-asarjamaat.textOpacity=0.9
-  jamaat.addSpacer(20) 
-  
-  var maghribjamaat = jamaat.addText(maghrib12hr)
-  maghribjamaat.font = Font.boldMonospacedSystemFont(17) ;
-maghribjamaat.textColor = Color.white()
-maghribjamaat.textOpacity=0.9
-  jamaat.addSpacer(21) 
-  
-  
-  var ishajamaat = jamaat.addText(ishab12hr) 
-  ishajamaat.font = Font.boldMonospacedSystemFont(17) ;
-ishajamaat.textColor = Color.white()
-ishajamaat.textOpacity=0.9
-  jamaat.addSpacer(14) 
+formatSalahLabel(ishalabel)
+
+label.addSpacer(1)
+jamaat.addSpacer(1)  
+
+
+function formatSalahLabel(salah){
+salah.font=Font.lightSystemFont(16);
+salah.textColor = Color.white()
+salah.textOpacity=0.9
 }
- else{
 
-var fajarjamaat = jamaat.addText(fajar12hr) 
-fajarjamaat.font = Font.boldMonospacedSystemFont(17) ;
-fajarjamaat.textColor = Color.white()
-fajarjamaat.textOpacity=0.9
-jamaat.addSpacer(23) 
+  
+// SHOW BEGINNING TIMES - if preference set  
+  
+if (Show_Beginning_Times=="yes"){
 
-var zoharjamaat = jamaat.addText(zohar12hr) 
-zoharjamaat.font = Font.boldMonospacedSystemFont(17) ;
-zoharjamaat.textColor = Color.white()
-zoharjamaat.textOpacity=0.9
+var fajarjamaat = jamaat.addText(fajarb) 
+formatSalah(fajarjamaat)
+jamaat.addSpacer(12) // < changes next salah
+  
+var zoharjamaat = jamaat.addText(zoharb) 
+formatSalah(zoharjamaat)
+jamaat.addSpacer(16) 
+  
+var asarjamaat = jamaat.addText(asarb) 
+formatSalah(asarjamaat)
+jamaat.addSpacer(17) 
+  
+var maghribjamaat = jamaat.addText(maghribb)
+formatSalah(maghribjamaat)
+jamaat.addSpacer(15) 
+  
+  
+var ishajamaat = jamaat.addText(ishab) 
+formatSalah(ishajamaat)
+jamaat.addSpacer(18) 
+}
+
+//SHOW JAMAAT TIMES - if preference set  
+
+
+if (Show_Beginning_Times=="no"){
+
+var fajarjamaat = jamaat.addText(fajar) 
+formatSalah(fajarjamaat)
+jamaat.addSpacer(12) // < changes next salah spacing
+
+
+var zoharjamaat = jamaat.addText(zohar) 
+formatSalah(zoharjamaat)
+jamaat.addSpacer(16) 
+
+var asarjamaat = jamaat.addText(asar) 
+formatSalah(asarjamaat)
 jamaat.addSpacer(17) 
 
-var asarjamaat = jamaat.addText(asar12hr) 
-asarjamaat.font = Font.boldMonospacedSystemFont(17) ;
-asarjamaat.textColor = Color.white()
-asarjamaat.textOpacity=0.9
-jamaat.addSpacer(21) 
+
+var maghribjamaat = jamaat.addText(maghribb) 
+formatSalah(maghribjamaat) 
+jamaat.addSpacer(16) 
 
 
-var maghribjamaat = jamaat.addText(maghrib12hr) 
-maghribjamaat.font = Font.boldMonospacedSystemFont(17) ;
-maghribjamaat.textColor = Color.white()
-maghribjamaat.textOpacity=0.9
-jamaat.addSpacer(21) 
-
-
-var ishajamaat = jamaat.addText(isha12hr) 
-ishajamaat.font = Font.boldMonospacedSystemFont(17) ;
-ishajamaat.textColor = Color.white()
-ishajamaat.textOpacity=0.9
-jamaat.addSpacer(2) 
+var ishajamaat = jamaat.addText(isha) 
+formatSalah(ishajamaat)
+jamaat.addSpacer(18) 
 }
+
+
+// truncated duplicate code below using function
+
+function formatSalah(salah){
+salah.font=Font.boldMonospacedSystemFont(14.5) ;
+salah.textColor = Color.white()
+salah.textOpacity=0.9
+}
+
+
 
 main.layoutVertically()
 middle.layoutVertically()
 left.layoutVertically()
 right.layoutVertically()
   
-widget.setPadding(50, 25, 0, 0)
+widget.setPadding(50, 25, 0, 8)
  
 
 if(!config.runsInWidget){
 widget.presentMedium()
 
 }
- 
+
+/*  
 Script.setWidget(widget)
 Script.complete()
+}
 
+  //required by autoupdate module
+module.exports = {
+  main
+} 
+ */
