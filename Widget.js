@@ -411,7 +411,7 @@ widget.presentMedium()
 
 }
 
-/*  
+
 Script.setWidget(widget)
 Script.complete()
 }
@@ -420,4 +420,4 @@ Script.complete()
 module.exports = {
   main
 } 
- */
+ 
