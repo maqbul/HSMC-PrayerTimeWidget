@@ -26,7 +26,7 @@
 //Notes: copy all code to github - DEV_Widget.js, remove commented lines at top (async) and bottom to test then if all ok, replace Widget.js on github
 
 
-//async function main() { //uncomment when publish
+async function main() { //uncomment when publish
 
   
  //create local file to set preference 
